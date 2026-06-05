@@ -3,82 +3,1270 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Omnium — Rider Profiling</title>
-<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<title>Your View on Rider Profiles — Omnium</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Merriweather:ital,wght@0,400;0,700;1,300;1,400&display=swap" rel="stylesheet">
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--ink:#2B2B2B;--ink2:#6B6B6B;--ink3:#A0A0A0;--bg:#F7F6F3;--white:#FFF;--rule:#E2DFD8;--rule2:#ECEAE4;--warm:#F0EDE6;--end:#3A7D5C;--end-s:#E3F0E9;--spr:#A04040;--spr-s:#F5E4E4;--bal:#4A6FA0;--bal-s:#E4EBF5;--r:6px;--f:'Inter',-apple-system,sans-serif;--sr:'Source Serif 4',Georgia,serif;--mo:'JetBrains Mono',monospace}
-html{scroll-behavior:smooth}body{background:var(--bg);color:var(--ink);font-family:var(--f);font-size:14px;line-height:1.6}::selection{background:#FBF5E3}
-.topbar{background:var(--white);border-bottom:1px solid var(--rule);padding:16px 28px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;position:sticky;top:0;z-index:100}
-.brand{font-family:var(--sr);font-weight:600;font-size:18px}.brand i{font-weight:300;font-style:italic;color:var(--ink2)}.topbar-sp{flex:1}
-.si{font-size:12px;color:var(--ink3);display:flex;align-items:center;gap:5px;transition:color .3s}.si.ok{color:var(--end)}.si-d{width:5px;height:5px;border-radius:50%;background:currentColor}
-.btn{display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 18px;border:1.5px solid var(--ink);background:var(--white);color:var(--ink);font-family:var(--f);font-size:13px;font-weight:500;cursor:pointer;border-radius:20px;transition:all .12s}.btn:hover{background:var(--ink);color:var(--white)}.btn.filled{background:var(--ink);color:var(--white)}.btn.filled:hover{opacity:.85}.btn.sm{height:30px;padding:0 14px;font-size:12px}.btn.rst{border-color:var(--rule);color:var(--ink2)}.btn.rst:hover{border-color:var(--spr);color:var(--spr);background:var(--spr-s)}
-.intro{max-width:720px;margin:0 auto;padding:36px 28px 20px;text-align:center}.intro h1{font-family:var(--sr);font-weight:400;font-size:26px;margin-bottom:12px;line-height:1.3}.intro h1 em{font-style:italic;font-weight:300}.intro p{font-size:14px;color:var(--ink2);line-height:1.7;max-width:560px;margin:0 auto}.intro p strong{color:var(--ink);font-weight:500}
-.prog-sec{max-width:720px;margin:0 auto;padding:0 28px 20px}.prog-row{display:flex;align-items:center;gap:12px}.prog-txt{font-size:12px;color:var(--ink3);white-space:nowrap}.prog-txt b{color:var(--ink2);font-weight:500}.prog-tr{flex:1;height:3px;background:var(--rule2);border-radius:2px;overflow:hidden}.prog-fl{height:100%;background:var(--ink2);border-radius:2px;transition:width .3s}.prog-pct{font-family:var(--mo);font-size:11px;color:var(--ink3);min-width:30px;text-align:right}
-.ctrls{max-width:960px;margin:0 auto;padding:0 28px 16px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.pg{display:flex;gap:3px}.pill{height:30px;padding:0 12px;border:1px solid var(--rule);border-radius:20px;background:0;color:var(--ink2);font-family:var(--f);font-size:12px;cursor:pointer;transition:all .12s;white-space:nowrap}.pill:hover{border-color:var(--ink2);color:var(--ink)}.pill.on{background:var(--ink);color:var(--white);border-color:var(--ink)}
-.sf{height:30px;padding:0 12px;border:1px solid var(--rule);border-radius:20px;background:var(--white);color:var(--ink);font-family:var(--f);font-size:12px;width:200px;outline:0;transition:border-color .12s}.sf::placeholder{color:var(--ink3)}.sf:focus{border-color:var(--ink2)}
-.ss{height:30px;padding:0 10px;border:1px solid var(--rule);border-radius:20px;background:var(--white);color:var(--ink2);font-family:var(--f);font-size:12px;cursor:pointer;outline:0;margin-left:auto}
-.main{max-width:960px;margin:0 auto;padding:0 28px 40px}
-.sh{display:flex;align-items:baseline;gap:10px;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--rule)}.sh-l{font-family:var(--sr);font-style:italic;font-weight:400;font-size:15px}.sh-c{font-size:11px;color:var(--ink3)}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px;margin-bottom:28px}
-.card{background:var(--white);border:1px solid var(--rule);border-radius:var(--r);padding:14px 16px 12px;transition:border-color .12s,box-shadow .12s}.card:hover{box-shadow:0 2px 8px rgba(0,0,0,.04)}.card.re{border-left:3px solid var(--end)}.card.rs{border-left:3px solid var(--spr)}.card.rb{border-left:3px solid var(--bal)}
-.ct{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:10px}.cn{font-family:var(--sr);font-weight:500;font-size:14px;line-height:1.25}.cm{font-size:11.5px;color:var(--ink3);margin-top:2px}.ctg{display:flex;flex-direction:column;align-items:flex-end;gap:2px;flex-shrink:0}.tag{font-size:10px;color:var(--ink3)}
-.gauge{display:flex;flex-direction:column;gap:5px}.gl{display:flex;justify-content:space-between;font-size:10px;font-weight:500;letter-spacing:.05em;text-transform:uppercase}.gle{color:var(--end)}.gls{color:var(--spr)}
-.gt{position:relative;height:8px;border-radius:4px;background:var(--rule2);cursor:pointer;user-select:none;touch-action:none}.gfe{position:absolute;left:0;top:0;height:100%;border-radius:4px 0 0 4px;background:var(--end-s);border-right:1.5px solid var(--end);pointer-events:none;transition:width .08s}.gfs{position:absolute;right:0;top:0;height:100%;border-radius:0 4px 4px 0;background:var(--spr-s);border-left:1.5px solid var(--spr);pointer-events:none;transition:width .08s}.gm{position:absolute;left:50%;top:-3px;width:1px;height:14px;background:var(--rule);pointer-events:none}.gth{position:absolute;width:16px;height:16px;border-radius:50%;background:var(--white);border:2px solid var(--ink3);box-shadow:0 1px 3px rgba(0,0,0,.1);cursor:grab;transform:translate(-50%,-50%);top:50%;transition:border-color .1s;z-index:2}.gth:active{cursor:grabbing;border-color:var(--ink)}.gt:hover .gth{border-color:var(--ink2)}
-.gr{display:flex;justify-content:space-between;align-items:center;min-height:20px}.chip{font-size:11px;font-weight:500;padding:2px 9px;border-radius:20px;letter-spacing:.03em}.ce{background:var(--end-s);color:var(--end)}.cs{background:var(--spr-s);color:var(--spr)}.cb{background:var(--bal-s);color:var(--bal)}.cn2{background:var(--rule2);color:var(--ink3);font-style:italic}.gn{font-family:var(--mo);font-size:11px;color:var(--ink3)}
-.io{border-top:1px solid var(--rule);padding-top:28px;margin-top:12px}.ioi{text-align:center;max-width:520px;margin:0 auto 24px}.ioi h2{font-family:var(--sr);font-weight:400;font-size:20px;margin-bottom:8px}.ioi p{font-size:13px;color:var(--ink2);line-height:1.6}
-.iog{display:grid;grid-template-columns:1fr 1fr;gap:16px}@media(max-width:640px){.iog{grid-template-columns:1fr}}
-.ioc{background:var(--white);border:1px solid var(--rule);border-radius:var(--r);padding:20px}.iot{font-family:var(--sr);font-weight:500;font-size:14px;margin-bottom:8px}.iod{font-size:12.5px;color:var(--ink2);line-height:1.6;margin-bottom:14px}
-.uz{border:1.5px dashed var(--rule);border-radius:var(--r);padding:20px;text-align:center;cursor:pointer;transition:all .15s}.uz:hover,.uz.ov{border-color:var(--ink2);background:var(--warm)}.uz input{display:none}.uzi{font-size:20px;margin-bottom:4px;color:var(--ink3)}.uzh{font-size:12px;color:var(--ink2)}.uzh strong{color:var(--ink)}.um{font-size:11px;color:var(--end);text-align:center;min-height:16px;margin-top:6px}
-.pv{margin-top:16px}.pvt{font-size:11px;color:var(--ink3);margin-bottom:6px;font-style:italic}
-.pt{width:100%;border-collapse:separate;border-spacing:0;font-size:12px;border:1px solid var(--rule);border-radius:var(--r);overflow:hidden}.pt th{background:var(--warm);font-weight:500;font-size:10.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--ink2);text-align:left;padding:7px 10px;border-bottom:1px solid var(--rule)}.pt td{padding:8px 10px;border-bottom:1px solid var(--rule2);vertical-align:middle}.pt tbody tr:last-child td{border-bottom:0}.pt tbody tr:nth-child(even) td{background:var(--bg)}
-.mb{display:flex;align-items:center;gap:6px}.mt{width:60px;height:5px;border-radius:3px;background:var(--rule2);overflow:hidden;flex-shrink:0}.mfe{height:100%;background:var(--end);border-radius:3px}.mfs{height:100%;background:var(--spr);border-radius:3px;float:right}
-.mc{font-size:10px;font-weight:500;padding:1px 7px;border-radius:10px;display:inline-block}.mce{background:var(--end-s);color:var(--end)}.mcs{background:var(--spr-s);color:var(--spr)}.mcb{background:var(--bal-s);color:var(--bal)}
-.pm{text-align:center;font-size:11px;color:var(--ink3);padding:8px;font-style:italic}
-.ty{text-align:center;padding:32px 20px 8px;max-width:480px;margin:0 auto}.ty p{font-family:var(--sr);font-style:italic;font-weight:300;font-size:14px;color:var(--ink2);line-height:1.6}
-.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(6px);background:var(--ink);color:var(--white);padding:9px 18px;border-radius:20px;font-size:12px;font-weight:500;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:999;white-space:nowrap}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-.es{grid-column:1/-1;text-align:center;padding:40px;color:var(--ink3);font-style:italic;font-family:var(--sr)}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  background: #faf8f5;
+  color: #1c1c1c;
+  line-height: 1.6;
+}
+
+/* ── Header ── */
+.header {
+  background: #fff;
+  border-bottom: 1px solid #e2e0da;
+  padding: 16px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.logo {
+  font-family: 'Merriweather', serif;
+  font-size: 19px;
+  color: #1c1c1c;
+}
+
+.logo em {
+  font-style: italic;
+  color: #888;
+  font-weight: 400;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.save-status {
+  font-size: 12px;
+  color: #bbb;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.3s;
+}
+
+.save-status.saved { color: #5b8a72; }
+
+.save-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.btn-reset {
+  height: 30px;
+  padding: 0 14px;
+  border: 1px solid #e0e0da;
+  background: white;
+  color: #999;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.15s;
+}
+
+.btn-reset:hover {
+  border-color: #c0392b;
+  color: #c0392b;
+  background: #fff5f5;
+}
+
+/* ── Intro ── */
+.intro {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 40px 24px 24px;
+}
+
+.intro h1 {
+  font-family: 'Merriweather', serif;
+  font-size: 27px;
+  font-weight: 400;
+  margin-bottom: 16px;
+  line-height: 1.3;
+}
+
+.intro p {
+  font-size: 13.5px;
+  color: #555;
+  line-height: 1.75;
+  margin-bottom: 10px;
+}
+
+.download-notice {
+  margin-top: 18px;
+  padding: 14px 18px;
+  background: #fffbeb;
+  border: 1px solid #f0d060;
+  border-left: 4px solid #d4a800;
+  border-radius: 5px;
+  font-size: 13px;
+  color: #5c4000;
+  line-height: 1.65;
+}
+
+.download-notice strong {
+  color: #3a2800;
+}
+
+/* ── Progress ── */
+.progress-section {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 24px 24px;
+}
+
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #aaa;
+  margin-bottom: 6px;
+}
+
+.progress-header b { color: #666; font-weight: 500; }
+
+.progress-track {
+  height: 4px;
+  background: #e2e0da;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #5b8a72;
+  border-radius: 2px;
+  transition: width 0.3s;
+  width: 0%;
+}
+
+/* ── Controls ── */
+.controls {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 24px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.filter-group { display: flex; gap: 4px; flex-wrap: wrap; }
+
+.filter-btn {
+  height: 30px;
+  padding: 0 13px;
+  border: 1px solid #e0e0da;
+  background: white;
+  color: #777;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.12s;
+  white-space: nowrap;
+}
+
+.filter-btn:hover { border-color: #aaa; color: #1c1c1c; }
+
+.filter-btn.active {
+  background: #1c1c1c;
+  color: white;
+  border-color: #1c1c1c;
+}
+
+.search-input {
+  height: 30px;
+  padding: 0 12px;
+  border: 1px solid #e0e0da;
+  background: white;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  border-radius: 4px;
+  outline: none;
+  width: 200px;
+  transition: border-color 0.12s;
+}
+
+.search-input:focus { border-color: #aaa; }
+.search-input::placeholder { color: #ccc; }
+
+.sort-select {
+  height: 30px;
+  padding: 0 10px;
+  border: 1px solid #e0e0da;
+  background: white;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: #777;
+  border-radius: 4px;
+  cursor: pointer;
+  outline: none;
+  margin-left: auto;
+}
+
+/* ── Main ── */
+.main {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 24px 60px;
+}
+
+.section-header {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e2e0da;
+}
+
+.section-title {
+  font-family: 'Merriweather', serif;
+  font-style: italic;
+  font-size: 15px;
+  font-weight: 400;
+}
+
+.section-count { font-size: 11px; color: #bbb; }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 10px;
+  margin-bottom: 32px;
+}
+
+/* ── Cards ── */
+.card {
+  background: white;
+  border: none;
+  border-radius: 12px;
+  padding: 14px 16px 13px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.05);
+  transition: box-shadow 0.12s;
+}
+
+.card:hover { box-shadow: 0 4px 14px rgba(0,0,0,0.10), 0 0 0 1px rgba(0,0,0,0.05); }
+
+.card.border-end { border-left: 3px solid #5b8a72; }
+.card.border-spr { border-left: 3px solid #b85c5c; }
+.card.border-bal { border-left: 3px solid #4a6fa0; }
+.card.border-dk  { border-left: 3px solid #ccc; }
+
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.rider-name {
+  font-size: 13.5px;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.rider-meta {
+  font-size: 11px;
+  color: #bbb;
+  margin-top: 2px;
+}
+
+.card-tags {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.tag { font-size: 10px; color: #ccc; }
+
+/* ── Sliders ── */
+.sliders { display: flex; flex-direction: column; gap: 8px; }
+
+.slider-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.slider-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  width: 40px;
+  flex-shrink: 0;
+}
+
+.slider-label.end-lbl { color: #5b8a72; }
+.slider-label.spr-lbl { color: #b85c5c; }
+
+.slider-track {
+  position: relative;
+  height: 8px;
+  border-radius: 4px;
+  background: #ebebeb;
+  flex: 1;
+  cursor: pointer;
+  user-select: none;
+  touch-action: none;
+  transition: opacity 0.2s;
+}
+
+.slider-track.disabled {
+  pointer-events: none;
+  opacity: 0.28;
+}
+
+.fill-end {
+  position: absolute;
+  left: 0; top: 0;
+  height: 100%;
+  border-radius: 4px 0 0 4px;
+  background: #d6ebe0;
+  border-right: 2px solid #5b8a72;
+  pointer-events: none;
+}
+
+.fill-spr {
+  position: absolute;
+  left: 0; top: 0;
+  height: 100%;
+  border-radius: 4px 0 0 4px;
+  background: #f5e0e0;
+  border-right: 2px solid #b85c5c;
+  pointer-events: none;
+}
+
+.thumb {
+  position: absolute;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: white;
+  border: 2px solid #bbb;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.12);
+  cursor: grab;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  z-index: 2;
+  transition: border-color 0.1s;
+}
+
+.thumb:active { cursor: grabbing; border-color: #333; }
+.slider-track:hover .thumb { border-color: #666; }
+
+.slider-val {
+  font-family: 'Courier New', monospace;
+  font-size: 11px;
+  color: #bbb;
+  width: 22px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+}
+
+/* ── Chips ── */
+.chip {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 2px 10px;
+  border-radius: 20px;
+}
+
+.chip-end { background: #d6ebe0; color: #5b8a72; }
+.chip-spr { background: #f5e0e0; color: #b85c5c; }
+.chip-bal { background: #dce6f5; color: #4a6fa0; }
+.chip-none { background: #f0f0ee; color: #bbb; font-style: italic; }
+
+/* ── Don't know button ── */
+.btn-dk {
+  font-size: 11px;
+  height: 24px;
+  padding: 0 10px;
+  border: 1px solid #e2e0da;
+  background: white;
+  color: #bbb;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  border-radius: 12px;
+  transition: all 0.15s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.btn-dk:hover { border-color: #aaa; color: #666; }
+
+.btn-dk.active {
+  background: #fdf8ea;
+  border-color: #c9b060;
+  color: #7a5f00;
+  font-style: italic;
+}
+
+/* ── Empty state ── */
+.empty {
+  grid-column: 1/-1;
+  text-align: center;
+  padding: 48px;
+  color: #ccc;
+  font-family: 'Merriweather', serif;
+  font-style: italic;
+  font-size: 15px;
+}
+
+/* ── Bottom section ── */
+.bottom-section {
+  border-top: 1px solid #e2e0da;
+  padding-top: 32px;
+  margin-top: 8px;
+}
+
+.bottom-intro {
+  text-align: center;
+  max-width: 560px;
+  margin: 0 auto 28px;
+}
+
+.bottom-intro h2 {
+  font-family: 'Merriweather', serif;
+  font-size: 21px;
+  font-weight: 400;
+  margin-bottom: 10px;
+}
+
+.bottom-intro p {
+  font-size: 13px;
+  color: #666;
+  line-height: 1.7;
+}
+
+.bottom-notice {
+  margin-top: 14px;
+  padding: 12px 16px;
+  background: #fffbeb;
+  border: 1px solid #f0d060;
+  border-left: 4px solid #d4a800;
+  border-radius: 5px;
+  font-size: 12.5px;
+  color: #5c4000;
+  line-height: 1.65;
+  text-align: left;
+}
+
+.bottom-notice strong { color: #3a2800; }
+
+.bottom-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+@media (max-width: 640px) { .bottom-grid { grid-template-columns: 1fr; } }
+
+.bottom-card {
+  background: white;
+  border: none;
+  border-radius: 12px;
+  padding: 22px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.05);
+}
+
+.bottom-card h3 {
+  font-family: 'Merriweather', serif;
+  font-size: 15px;
+  font-weight: 400;
+  margin-bottom: 8px;
+}
+
+.bottom-card p {
+  font-size: 12.5px;
+  color: #666;
+  line-height: 1.65;
+  margin-bottom: 16px;
+}
+
+.btn-download {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 36px;
+  padding: 0 20px;
+  background: #1c1c1c;
+  color: white;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.btn-download:hover { opacity: 0.82; }
+
+/* Upload zone */
+.upload-zone {
+  border: 1.5px dashed #e0e0da;
+  border-radius: 12px;
+  padding: 22px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.15s;
+  margin-bottom: 8px;
+}
+
+.upload-zone:hover, .upload-zone.over {
+  border-color: #aaa;
+  background: #f9f9f7;
+}
+
+.upload-zone input { display: none; }
+.upload-icon { font-size: 22px; color: #ddd; margin-bottom: 4px; }
+.upload-text { font-size: 12px; color: #888; }
+.upload-text strong { color: #444; }
+.upload-msg { font-size: 11px; color: #5b8a72; text-align: center; min-height: 16px; margin-top: 6px; }
+
+/* Preview */
+.preview-wrap { margin-top: 18px; }
+.preview-label { font-size: 11px; color: #aaa; margin-bottom: 6px; font-style: italic; }
+
+.preview-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 12px;
+  border: 1px solid #e2e0da;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.preview-table th {
+  background: #f9f9f7;
+  font-weight: 500;
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #aaa;
+  text-align: left;
+  padding: 7px 10px;
+  border-bottom: 1px solid #e2e0da;
+}
+
+.preview-table td {
+  padding: 7px 10px;
+  border-bottom: 1px solid #f0f0ee;
+  vertical-align: middle;
+}
+
+.preview-table tr:last-child td { border-bottom: none; }
+.preview-table tr:nth-child(even) td { background: #fcfcfa; }
+
+.bar-wrap { display: flex; align-items: center; gap: 5px; margin-bottom: 3px; }
+.mini-bar { width: 50px; height: 4px; border-radius: 2px; background: #ebebeb; overflow: hidden; flex-shrink: 0; }
+.mini-bar-end { height: 100%; background: #5b8a72; border-radius: 2px; }
+.mini-bar-spr { height: 100%; background: #b85c5c; border-radius: 2px; }
+
+.preview-more { text-align: center; font-size: 11px; color: #ccc; padding: 8px; font-style: italic; }
+
+.closing-note {
+  text-align: center;
+  padding: 32px 20px 12px;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.closing-note p {
+  font-family: 'Merriweather', serif;
+  font-style: italic;
+  font-size: 14px;
+  color: #888;
+  line-height: 1.6;
+  font-weight: 400;
+}
+
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%) translateY(6px);
+  background: #1c1c1c;
+  color: white;
+  padding: 9px 18px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s, transform 0.2s;
+  z-index: 999;
+  white-space: nowrap;
+}
+
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
 </style>
 </head>
 <body>
-<div class="topbar"><span class="brand">Omnium <i>Rider Profiling</i></span><span class="topbar-sp"></span><span class="si" id="si"><span class="si-d"></span><span id="stx">No changes yet</span></span><button class="btn rst sm" onclick="resetAll()">Reset all</button></div>
-<div class="intro"><h1>Help us understand <em>how riders race</em></h1><p>For each rider, slide the gauge toward <strong>Endurance</strong> or <strong>Sprint</strong> based on your expertise. There are no wrong answers — we want <strong>your perspective</strong> as an analyst. Take your time, your progress saves automatically.</p></div>
-<div class="prog-sec"><div class="prog-row"><span class="prog-txt"><b id="rn">0</b> of 120 riders rated</span><div class="prog-tr"><div class="prog-fl" id="pf"></div></div><span class="prog-pct" id="pp">0%</span></div></div>
-<div class="ctrls"><div class="pg"><button class="pill on" id="f-all" onclick="sf('all')">All</button><button class="pill" id="f-men" onclick="sf('men')">Men</button><button class="pill" id="f-women" onclick="sf('women')">Women</button><button class="pill" id="f-rated" onclick="sf('rated')">Rated</button><button class="pill" id="f-unrated" onclick="sf('unrated')">Still to do</button></div><input class="sf" type="text" placeholder="Search a rider or country…" oninput="qs(this.value)"><select class="ss" onchange="so(this.value)"><option value="name">A → Z</option><option value="rank">Best result</option><option value="profile">Endurance → Sprint</option><option value="editions">Most editions</option></select></div>
-<div class="main" id="M"></div>
-<div class="toast" id="T"></div>
+
+<!-- Header -->
+<div class="header">
+  <span class="logo">Omnium <em>Rider Profiling</em></span>
+  <div class="header-right">
+    <span class="save-status" id="save-status">
+      <span class="save-dot"></span>
+      <span id="save-text">No changes yet</span>
+    </span>
+    <button class="btn-reset" onclick="resetAll()">Reset all</button>
+  </div>
+</div>
+
+<!-- Introduction -->
+<div class="intro">
+  <h1>Your View on Rider Profiles</h1>
+  <p>
+    For each rider, adjust both sliders independently (<strong>Endurance</strong> and <strong>Sprint</strong>) based on your expertise. The two scores are separate: a rider can be high on one, both, or neither.
+    Use <strong>Not familiar</strong> for riders you do not know well enough to rate.
+  </p>
+  <div class="download-notice">
+    <strong>⚠ Important:</strong> When you are done, click <em>Download CSV</em> and send the file.
+  </div>
+</div>
+
+<!-- Progress -->
+<div class="progress-section">
+  <div class="progress-header">
+    <span><b id="rated-count">0</b> of 50 riders assessed</span>
+    <span id="pct-text">0%</span>
+  </div>
+  <div class="progress-track">
+    <div class="progress-fill" id="progress-fill"></div>
+  </div>
+</div>
+
+<!-- Controls -->
+<div class="controls">
+  <div class="filter-group">
+    <button class="filter-btn active" id="f-all"      onclick="setFilter('all')">All</button>
+    <button class="filter-btn"        id="f-men"      onclick="setFilter('men')">Men</button>
+    <button class="filter-btn"        id="f-women"    onclick="setFilter('women')">Women</button>
+    <button class="filter-btn"        id="f-rated"    onclick="setFilter('rated')">Assessed</button>
+    <button class="filter-btn"        id="f-unrated"  onclick="setFilter('unrated')">Still to do</button>
+  </div>
+  <input class="search-input" type="text" placeholder="Search by name or country…" oninput="setSearch(this.value)">
+  <select class="sort-select" onchange="setSort(this.value)">
+    <option value="name">Sort A → Z</option>
+    <option value="rank">Sort by best result</option>
+    <option value="editions">Sort by editions</option>
+    <option value="profile">Sort: Endurance → Sprint</option>
+  </select>
+</div>
+
+<!-- Grid -->
+<div class="main" id="main-content"></div>
+
+<div class="toast" id="toast"></div>
+
 <script>
-const R=[{"id":"27659157","name":"Alves Oliveira Rui Filipe","nat":"POR","gender":"Men","years":[2024],"best_rank":6},{"id":"78824037","name":"Arango Carvajal J.E.","nat":"COL","gender":"Men","years":[2022],"best_rank":18},{"id":"56748580","name":"Arango Carvajal Juan Esteban","nat":"COL","gender":"Men","years":[2024],"best_rank":19},{"id":"28033703","name":"Augenstein Moritz","nat":"GER","gender":"Men","years":[2025],"best_rank":5},{"id":"97289517","name":"Banaszek Alan","nat":"POL","gender":"Men","years":[2022,2023,2024],"best_rank":10},{"id":"68288163","name":"Barry Ashlin","nat":"USA","gender":"Men","years":[2025],"best_rank":16},{"id":"48783058","name":"Bibic Dylan","nat":"CAN","gender":"Men","years":[2022,2023,2024,2025],"best_rank":10},{"id":"94046178","name":"Bleddyn Oliver","nat":"AUS","gender":"Men","years":[2025],"best_rank":10},{"id":"62962333","name":"Bostock Matthew","nat":"GBR","gender":"Men","years":[2025],"best_rank":7},{"id":"84757816","name":"Campbell Akil","nat":"TTO","gender":"Men","years":[2022,2023,2024,2025],"best_rank":21},{"id":"64761356","name":"Chalel Yacine","nat":"ALG","gender":"Men","years":[2022],"best_rank":24},{"id":"68997954","name":"Chren Martin","nat":"SVK","gender":"Men","years":[2025],"best_rank":23},{"id":"86461499","name":"Consonni Simone","nat":"ITA","gender":"Men","years":[2024],"best_rank":2},{"id":"30681378","name":"Crista Daniel","nat":"ROU","gender":"Men","years":[2022,2023],"best_rank":18},{"id":"83754246","name":"Decar Zuniga Jacob","nat":"CHI","gender":"Men","years":[2025],"best_rank":22},{"id":"1214363","name":"Dinmukhametov Ramis","nat":"KAZ","gender":"Men","years":[2024],"best_rank":18},{"id":"97061713","name":"Dorenbos Yanne","nat":"NED","gender":"Men","years":[2024],"best_rank":3},{"id":"53475725","name":"Drijver Bertold","nat":"HUN","gender":"Men","years":[2025],"best_rank":17},{"id":"55360743","name":"Gate Aaron","nat":"NZL","gender":"Men","years":[2022],"best_rank":3},{"id":"57821902","name":"Hansen Tobias Aagaard","nat":"DEN","gender":"Men","years":[2024],"best_rank":12},{"id":"4250938","name":"Hayter Ethan","nat":"GBR","gender":"Men","years":[2022],"best_rank":1},{"id":"34832345","name":"Hayter Ethan Edward","nat":"GBR","gender":"Men","years":[2024],"best_rank":5},{"id":"75406685","name":"Heijnen Philip","nat":"NED","gender":"Men","years":[2025],"best_rank":8},{"id":"70706456","name":"Hesters Jules","nat":"BEL","gender":"Men","years":[2022],"best_rank":11},{"id":"17551333","name":"Hoover Gavin","nat":"USA","gender":"Men","years":[2022,2023],"best_rank":15},{"id":"3346727","name":"Hoppezak Vincent","nat":"NED","gender":"Men","years":[2022,2023],"best_rank":5},{"id":"39436823","name":"Imamura Shunsuke","nat":"JPN","gender":"Men","years":[2022,2023,2024],"best_rank":3},{"id":"67253546","name":"Kokas Raphael","nat":"AUT","gender":"Men","years":[2025],"best_rank":15},{"id":"18818743","name":"Koontz Grant","nat":"USA","gender":"Men","years":[2024],"best_rank":13},{"id":"20741528","name":"Krenek Adam","nat":"CZE","gender":"Men","years":[2025],"best_rank":11},{"id":"34216028","name":"Kuboki Kazushige","nat":"JPN","gender":"Men","years":[2025],"best_rank":2},{"id":"7644468","name":"Larsen Niklas","nat":"DEN","gender":"Men","years":[2022,2023,2025],"best_rank":4},{"id":"5399591","name":"Leitao Iuri","nat":"POR","gender":"Men","years":[2023,2025],"best_rank":1},{"id":"95209140","name":"Martinez Moros Clever Jose","nat":"VEN","gender":"Men","years":[2025],"best_rank":20},{"id":"79229911","name":"Matias Joao","nat":"POR","gender":"Men","years":[2022],"best_rank":16},{"id":"95248079","name":"Mora Vedri Sebastian","nat":"ESP","gender":"Men","years":[2022,2023,2024],"best_rank":7},{"id":"26689115","name":"Nava Romo Fernando Gabriel","nat":"MEX","gender":"Men","years":[2024],"best_rank":17},{"id":"48423357","name":"Nilsson Julien Oscar","nat":"FRA","gender":"Men","years":[2025],"best_rank":6},{"id":"97405179","name":"Nilsson-Julien Oscar","nat":"FRA","gender":"Men","years":[2024],"best_rank":4},{"id":"63114164","name":"O'Brien Kelland","nat":"AUS","gender":"Men","years":[2022,2023],"best_rank":13},{"id":"51902773","name":"Pena Salas Ricardo","nat":"MEX","gender":"Men","years":[2022,2023,2025],"best_rank":17},{"id":"48029932","name":"Prokopyszyn Filip","nat":"POL","gender":"Men","years":[2025],"best_rank":13},{"id":"19054815","name":"Pulgar Araujo Angel Ramiro","nat":"VEN","gender":"Men","years":[2022],"best_rank":22},{"id":"72012261","name":"Sekhon Harshveer","nat":"IND","gender":"Men","years":[2024],"best_rank":23},{"id":"73077978","name":"Sierra Juan David","nat":"ITA","gender":"Men","years":[2025],"best_rank":12},{"id":"38302585","name":"Stewart Campbell","nat":"NZL","gender":"Men","years":[2023,2025],"best_rank":11},{"id":"23474282","name":"Teutenberg Tim Torn","nat":"GER","gender":"Men","years":[2022,2023,2024],"best_rank":5},{"id":"5240411","name":"Thiebaud Valere","nat":"SUI","gender":"Men","years":[2023],"best_rank":17},{"id":"8051440","name":"Thomas Benjamin","nat":"FRA","gender":"Men","years":[2022,2023],"best_rank":2},{"id":"82786074","name":"Torres Barcelo Albert","nat":"ESP","gender":"Men","years":[2025],"best_rank":1},{"id":"27203638","name":"Tso Kai Kwong","nat":"HKG","gender":"Men","years":[2024],"best_rank":20},{"id":"13804117","name":"Vitzthum Simon","nat":"SUI","gender":"Men","years":[2022,2024],"best_rank":8},{"id":"15449536","name":"Viviani Elia","nat":"ITA","gender":"Men","years":[2022,2023],"best_rank":6},{"id":"23714002","name":"Vogel Alex","nat":"SUI","gender":"Men","years":[2025],"best_rank":21},{"id":"61837031","name":"Vones Jan","nat":"CZE","gender":"Men","years":[2024],"best_rank":16},{"id":"58391999","name":"Wafler Tim","nat":"AUT","gender":"Men","years":[2023],"best_rank":14},{"id":"63371416","name":"Walsh Liam","nat":"AUS","gender":"Men","years":[2024],"best_rank":15},{"id":"427061","name":"Wood Oliver","nat":"GBR","gender":"Men","years":[2023],"best_rank":9},{"id":"18581361","name":"Zakharov Artyom","nat":"KAZ","gender":"Men","years":[2022,2023],"best_rank":19},{"id":"46347149","name":"de Vylder Lindsay","nat":"BEL","gender":"Men","years":[2024,2025],"best_rank":1},{"id":"87737387","name":"van Aert Bernard Benyamin","nat":"INA","gender":"Men","years":[2022,2023,2024],"best_rank":20},{"id":"84222176","name":"van den Bossche Fabio","nat":"BEL","gender":"Men","years":[2023],"best_rank":7},{"id":"46595788","name":"Acevedo Mendoza Yareli","nat":"MEX","gender":"Women","years":[2024,2025],"best_rank":5},{"id":"66084761","name":"Anguela Yaguez Eva","nat":"ESP","gender":"Women","years":[2024,2025],"best_rank":8},{"id":"98948314","name":"Archibald Katie","nat":"GBR","gender":"Women","years":[2023],"best_rank":4},{"id":"85123622","name":"Bacikova Alzbeta","nat":"SVK","gender":"Women","years":[2025],"best_rank":22},{"id":"58838151","name":"Baleisyte Olivija","nat":"LTU","gender":"Women","years":[2023],"best_rank":14},{"id":"35984318","name":"Balsamo Elisa","nat":"ITA","gender":"Women","years":[2022],"best_rank":10},{"id":"63985563","name":"Bacikova Alzbeta (SVK)","nat":"SVK","gender":"Women","years":[2022,2024],"best_rank":19},{"id":"12871485","name":"Berteau Victoire","nat":"FRA","gender":"Women","years":[2024],"best_rank":4},{"id":"40509959","name":"Borras Marion","nat":"FRA","gender":"Women","years":[2025],"best_rank":2},{"id":"38090500","name":"Bossuyt Shari","nat":"BEL","gender":"Women","years":[2025],"best_rank":4},{"id":"54002617","name":"Brautigam Messane","nat":"GER","gender":"Women","years":[2025],"best_rank":17},{"id":"87818676","name":"Cauchois One Fanny","nat":"LAO","gender":"Women","years":[2024],"best_rank":24},{"id":"19027696","name":"Coles-Lyster Maggie","nat":"CAN","gender":"Women","years":[2022,2023],"best_rank":4},{"id":"76093049","name":"Copponi Clara","nat":"FRA","gender":"Women","years":[2022],"best_rank":8},{"id":"43016267","name":"Cortes Ugarte Scarlet","nat":"CHI","gender":"Women","years":[2025],"best_rank":18},{"id":"46758098","name":"Dideriksen Amalie","nat":"DEN","gender":"Women","years":[2022,2023,2024,2025],"best_rank":2},{"id":"5529561","name":"Donnelly Samantha","nat":"NZL","gender":"Women","years":[2025],"best_rank":13},{"id":"34335148","name":"Drummond Michaela","nat":"NZL","gender":"Women","years":[2022],"best_rank":7},{"id":"17819418","name":"Eberhardt Verena","nat":"AUT","gender":"Women","years":[2022],"best_rank":18},{"id":"2197685","name":"Fortin Valentine","nat":"FRA","gender":"Women","years":[2023],"best_rank":5},{"id":"60119987","name":"Gedraityte Akvile","nat":"LTU","gender":"Women","years":[2024,2025],"best_rank":20},{"id":"93104679","name":"Gillespie Lara","nat":"IRL","gender":"Women","years":[2023,2024,2025],"best_rank":6},{"id":"53647978","name":"Guazzini Vittoria","nat":"ITA","gender":"Women","years":[2025],"best_rank":14},{"id":"67648856","name":"Hernandez Gomez Lina","nat":"COL","gender":"Women","years":[2024],"best_rank":19},{"id":"23623562","name":"Jastrab Megan","nat":"USA","gender":"Women","years":[2025],"best_rank":15},{"id":"78449385","name":"Joseph Amber","nat":"BAR","gender":"Women","years":[2022,2023],"best_rank":23},{"id":"60795002","name":"Kajihara Yumi","nat":"JPN","gender":"Women","years":[2022,2023,2025],"best_rank":7},{"id":"57630117","name":"Karasiewicz Karolina","nat":"POL","gender":"Women","years":[2022],"best_rank":21},{"id":"26637338","name":"Kay Emily","nat":"IRL","gender":"Women","years":[2022],"best_rank":12},{"id":"2476364","name":"Kopecky Lotte","nat":"BEL","gender":"Women","years":[2022,2023],"best_rank":3},{"id":"61239637","name":"Larrarte Arteaga Eukene","nat":"ESP","gender":"Women","years":[2022,2023],"best_rank":16},{"id":"82799438","name":"Lee Sze Wing","nat":"HKG","gender":"Women","years":[2023,2024],"best_rank":15},{"id":"71763134","name":"Lewis Sophie","nat":"GBR","gender":"Women","years":[2022],"best_rank":16},{"id":"15947070","name":"Manly Alexandra","nat":"AUS","gender":"Women","years":[2024],"best_rank":16},{"id":"66176699","name":"Martins Maria","nat":"POR","gender":"Women","years":[2022,2023,2024],"best_rank":3},{"id":"39832383","name":"Milaki Argyro","nat":"GRE","gender":"Women","years":[2023],"best_rank":19},{"id":"9760161","name":"Moran Chloe","nat":"AUS","gender":"Women","years":[2023],"best_rank":20},{"id":"57564247","name":"Paternoster Letizia","nat":"ITA","gender":"Women","years":[2023,2024],"best_rank":11},{"id":"27456208","name":"Pikulik Daria","nat":"POL","gender":"Women","years":[2023],"best_rank":7},{"id":"87037441","name":"Plante Lily","nat":"CAN","gender":"Women","years":[2024,2025],"best_rank":17},{"id":"29202521","name":"Plouffe Maeve","nat":"AUS","gender":"Women","years":[2025],"best_rank":21},{"id":"27090996","name":"Raaijmakers Marit","nat":"NED","gender":"Women","years":[2023],"best_rank":12},{"id":"90754083","name":"Roberts Jessica","nat":"GBR","gender":"Women","years":[2024,2025],"best_rank":2},{"id":"97652378","name":"Seitz Aline","nat":"SUI","gender":"Women","years":[2022,2023,2024,2025],"best_rank":12},{"id":"31175482","name":"Sevcikova Petra","nat":"CZE","gender":"Women","years":[2025],"best_rank":9},{"id":"62126443","name":"Stenberg Anita Yvonne","nat":"NOR","gender":"Women","years":[2022,2023,2024,2025],"best_rank":3},{"id":"38681871","name":"Teutenberg Lea Lin","nat":"GER","gender":"Women","years":[2022],"best_rank":11},{"id":"20328272","name":"Uchino Tsuyaka","nat":"JPN","gender":"Women","years":[2024],"best_rank":7},{"id":"20001191","name":"Valente Jennifer","nat":"USA","gender":"Women","years":[2022,2023,2024],"best_rank":1},{"id":"63109943","name":"Vanhove Marith","nat":"BEL","gender":"Women","years":[2024],"best_rank":22},{"id":"61319371","name":"Velasco Fuentes Victoria","nat":"MEX","gender":"Women","years":[2022,2023],"best_rank":22},{"id":"8396433","name":"Wankiewicz Olga","nat":"POL","gender":"Women","years":[2024,2025],"best_rank":16},{"id":"85485328","name":"Wiebes Lorena","nat":"NED","gender":"Women","years":[2025],"best_rank":1},{"id":"89564479","name":"Wollaston Ally","nat":"NZL","gender":"Women","years":[2023,2024],"best_rank":1},{"id":"10909412","name":"Zayed Ahmed Ebtissam","nat":"EGY","gender":"Women","years":[2022,2023],"best_rank":20},{"id":"35136797","name":"Zhou Menghan","nat":"CHN","gender":"Women","years":[2024],"best_rank":21},{"id":"34354382","name":"van der Duin Maike","nat":"NED","gender":"Women","years":[2022],"best_rank":2},{"id":"28827751","name":"Sevcikova Petra B.","nat":"CZE","gender":"Women","years":[2022,2023,2024],"best_rank":10}];
-const K='omnium_ratings_v3';const rt=(()=>{try{return JSON.parse(localStorage.getItem(K))||{}}catch(e){return{}}})();
-let fl='all',sq='',sb='name',dr=null;
-function pr(v){if(v==null)return null;if(v<=35)return{l:'Endurance',c:'ce',cc:'re',mc:'mce'};if(v>=65)return{l:'Sprint',c:'cs',cc:'rs',mc:'mcs'};return{l:'Balanced',c:'cb',cc:'rb',mc:'mcb'};}
-function ep(v){return v<=50?(50-v)*2:0;}function sp(v){return v>=50?(v-50)*2:0;}
-function gl(){let l=[...R];if(fl==='men')l=l.filter(r=>r.gender==='Men');if(fl==='women')l=l.filter(r=>r.gender==='Women');if(fl==='rated')l=l.filter(r=>rt[r.id]!=null);if(fl==='unrated')l=l.filter(r=>rt[r.id]==null);if(sq)l=l.filter(r=>r.name.toLowerCase().includes(sq)||r.nat.toLowerCase().includes(sq));l.sort((a,b)=>{if(sb==='rank')return a.best_rank-b.best_rank;if(sb==='editions')return b.years.length-a.years.length;if(sb==='profile')return(rt[a.id]??50)-(rt[b.id]??50);return a.name.localeCompare(b.name)});return l;}
-let st;function sv(){try{localStorage.setItem(K,JSON.stringify(rt))}catch(e){}const s=document.getElementById('si'),t=document.getElementById('stx');s.classList.add('ok');t.textContent='Saved';clearTimeout(st);st=setTimeout(()=>{s.classList.remove('ok');t.textContent='Auto-saved'},1200);}
-function up(){const n=Object.keys(rt).length,p=Math.round(n/R.length*100);document.getElementById('rn').textContent=n;document.getElementById('pf').style.width=p+'%';document.getElementById('pp').textContent=p+'%';}
-function ch(r){const v=rt[r.id],rd=v!=null,vl=rd?v:50,p=rd?pr(vl):null,cc=rd?' '+p.cc:'',ci=rd?`<span class="chip ${p.c}">${p.l}</span><span class="gn">${vl}</span>`:`<span class="chip cn2">Not rated yet</span>`;
-return`<div class="card${cc}" id="c-${r.id}"><div class="ct"><div><div class="cn">${r.name}</div><div class="cm">${r.nat} · best #${r.best_rank}</div></div><div class="ctg"><span class="tag">${r.gender}</span><span class="tag">${r.years.sort().join(' · ')}</span></div></div><div class="gauge"><div class="gl"><span class="gle">Endurance</span><span class="gls">Sprint</span></div><div class="gt" id="t-${r.id}" onmousedown="ds(event,'${r.id}')" ontouchstart="dt(event,'${r.id}')"><div class="gfe" style="width:${ep(vl)}%"></div><div class="gfs" style="width:${sp(vl)}%"></div><div class="gm"></div><div class="gth" style="left:${vl}%"></div></div><div class="gr">${ci}</div></div></div>`;}
-function render(){const l=gl(),m=l.filter(r=>r.gender==='Men'),w=l.filter(r=>r.gender==='Women'),s2=(fl==='all'||fl==='rated'||fl==='unrated')&&m.length&&w.length;let h='';if(s2)h=sc('Men',m)+sc('Women',w);else if(m.length)h=sc('Men',m);else if(w.length)h=sc('Women',w);else h='<div class="grid"><div class="es">No riders match your search.</div></div>';h+=io();document.getElementById('M').innerHTML=h;up();uv();}
-function sc(t,rs){const n=rs.filter(r=>rt[r.id]!=null).length;return`<div class="sh"><span class="sh-l">${t}</span><span class="sh-c">${n} / ${rs.length} rated</span></div><div class="grid">${rs.map(ch).join('')}</div>`;}
-function io(){return`<div class="io"><div class="ioi"><h2>When you're done</h2><p>Download your ratings as a CSV and send it back to us. If you need to come back later, everything is saved in your browser.</p></div><div class="iog"><div class="ioc"><div class="iot">Download your ratings</div><div class="iod">Every rider you rated will be included with their profile value and label. Riders you skipped appear with an empty profile column.</div><button class="btn filled" onclick="ex()">Download CSV</button><div class="pv" id="pw"></div></div><div class="ioc"><div class="iot">Continue a previous session</div><div class="iod">Have a CSV from before? Drop it here and your ratings will be restored exactly where you left off.</div><label class="uz" id="uz" ondragover="event.preventDefault();this.classList.add('ov')" ondragleave="this.classList.remove('ov')" ondrop="event.preventDefault();this.classList.remove('ov');lf(event.dataTransfer.files[0])"><input type="file" accept=".csv" onchange="lf(this.files[0])"><div class="uzi">↑</div><div class="uzh"><strong>Click to choose</strong> or drag a CSV here</div></label><div class="um" id="um"></div></div></div><div class="ty"><p>Thank you so much for taking the time to do this — your expertise really helps us build a better picture of how the Omnium field races. It means a lot!</p></div></div>`;}
-function ap(id,v){rt[id]=v;const c=document.getElementById('c-'+id),t=document.getElementById('t-'+id);if(!t)return;t.querySelector('.gth').style.left=v+'%';t.querySelector('.gfe').style.width=ep(v)+'%';t.querySelector('.gfs').style.width=sp(v)+'%';const p=pr(v);c.className='card '+p.cc;c.querySelector('.gr').innerHTML=`<span class="chip ${p.c}">${p.l}</span><span class="gn">${v}</span>`;up();sv();uv();}
-function po(t,cx){const r=t.getBoundingClientRect();return Math.max(0,Math.min(100,Math.round((cx-r.left)/r.width*100)));}
-function ds(e,id){e.preventDefault();dr=id;ap(id,po(document.getElementById('t-'+id),e.clientX));}
-function dt(e,id){e.preventDefault();dr=id;ap(id,po(document.getElementById('t-'+id),e.touches[0].clientX));}
-document.addEventListener('mousemove',e=>{if(!dr)return;const t=document.getElementById('t-'+dr);if(t)ap(dr,po(t,e.clientX));});
-document.addEventListener('touchmove',e=>{if(!dr)return;const t=document.getElementById('t-'+dr);if(t)ap(dr,po(t,e.touches[0].clientX));},{passive:false});
-document.addEventListener('mouseup',()=>{dr=null});document.addEventListener('touchend',()=>{dr=null});
-function sf(f){fl=f;['all','men','women','rated','unrated'].forEach(k=>{const el=document.getElementById('f-'+k);if(el)el.className='pill'+(k===f?' on':'')});render();}
-function qs(v){sq=v.toLowerCase();render();}function so(v){sb=v;render();}
-function resetAll(){if(!confirm('This will clear all your ratings. Are you sure?'))return;Object.keys(rt).forEach(k=>delete rt[k]);sv();render();toast('All ratings cleared');}
-function uv(){const w=document.getElementById('pw');if(!w)return;const rd=R.filter(r=>rt[r.id]!=null).sort((a,b)=>(rt[a.id]??50)-(rt[b.id]??50));if(!rd.length){w.innerHTML='<div class="pvt" style="margin-top:16px;text-align:center">Rate some riders to see a preview here</div>';return;}
-const sh=rd.slice(0,8),mo=rd.length-sh.length;const rows=sh.map(r=>{const v=rt[r.id],p=pr(v),bh=v<=50?`<div class="mfe" style="width:${ep(v)}%"></div>`:v>50?`<div class="mfs" style="width:${sp(v)}%"></div>`:'';return`<tr><td style="font-weight:500">${r.name}</td><td style="color:var(--ink2)">${r.nat}</td><td><div class="mb"><div class="mt">${bh}</div><span style="font-family:var(--mo);font-size:11px;color:var(--ink2)">${v}</span></div></td><td><span class="mc ${p.mc}">${p.l}</span></td></tr>`}).join('');
-w.innerHTML=`<div class="pv"><div class="pvt">Preview of your ratings (${rd.length} rated)</div><table class="pt"><thead><tr><th>Rider</th><th>NAT</th><th>Value</th><th>Profile</th></tr></thead><tbody>${rows}</tbody></table>${mo>0?`<div class="pm">${mo} more rated riders will be in the CSV</div>`:''}</div>`;}
-function ex(){const hdr='rider_id,name,nat,gender,years,best_rank,profile_value,endurance_pct,sprint_pct,profile_label,analyst_note';const lines=[hdr];R.forEach(r=>{const v=rt[r.id]!=null?rt[r.id]:'',e=v!==''?ep(v)+'%':'',s=v!==''?sp(v)+'%':'',l=v!==''?pr(v).l:'';lines.push([r.id,'"'+r.name+'"',r.nat,r.gender,'"'+r.years.sort().join(',')+'"',r.best_rank,v,e,s,l,''].join(','))});const blob=new Blob([lines.join('\n')],{type:'text/csv;charset=utf-8;'});const a=Object.assign(document.createElement('a'),{href:URL.createObjectURL(blob),download:'omnium_profiles.csv'});document.body.appendChild(a);a.click();document.body.removeChild(a);toast('Downloaded — '+Object.keys(rt).length+' riders included');}
-function lf(f){if(!f)return;const reader=new FileReader();reader.onload=e=>{const lines=e.target.result.split('\n'),hdr=lines[0].split(','),ii=hdr.indexOf('rider_id'),vi=hdr.indexOf('profile_value');if(ii<0||vi<0){document.getElementById('um').textContent='Could not find the right columns';return;}let n=0;lines.slice(1).forEach(line=>{const c=line.split(','),id=c[ii]?.trim(),raw=c[vi]?.trim();if(id&&raw!==''){const v=parseInt(raw);if(!isNaN(v)&&v>=0&&v<=100){rt[id]=v;n++}}});sv();render();document.getElementById('um').textContent=n+' ratings loaded successfully';toast(n+' ratings restored')};reader.readAsText(f);}
-let tt;function toast(m){const el=document.getElementById('T');el.textContent=m;el.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>el.classList.remove('show'),2600);}
-render();if(Object.keys(rt).length>0)document.getElementById('stx').textContent='Auto-saved';
+
+// ── Rider data: 25 men + 25 women (selected by number of editions, then best rank) ──
+
+const RIDERS = [
+  // Men
+  { id:"48783058", name:"Bibic Dylan",              nat:"CAN", gender:"Men",   years:[2022,2023,2024,2025], best:10 },
+  { id:"84757816", name:"Campbell Akil",             nat:"TTO", gender:"Men",   years:[2022,2023,2024,2025], best:21 },
+  { id:"7644468",  name:"Larsen Niklas",             nat:"DEN", gender:"Men",   years:[2022,2023,2025],      best:4  },
+  { id:"39436823", name:"Imamura Shunsuke",          nat:"JPN", gender:"Men",   years:[2022,2023,2024],      best:3  },
+  { id:"23474282", name:"Teutenberg Tim Torn",       nat:"GER", gender:"Men",   years:[2022,2023,2024],      best:5  },
+  { id:"95248079", name:"Mora Vedri Sebastian",      nat:"ESP", gender:"Men",   years:[2022,2023,2024],      best:7  },
+  { id:"97289517", name:"Banaszek Alan",             nat:"POL", gender:"Men",   years:[2022,2023,2024],      best:10 },
+  { id:"87737387", name:"van Aert Bernard Benyamin", nat:"INA", gender:"Men",   years:[2022,2023,2024],      best:20 },
+  { id:"51902773", name:"Pena Salas Ricardo",        nat:"MEX", gender:"Men",   years:[2022,2023,2025],      best:17 },
+  { id:"3346727",  name:"Hoppezak Vincent",          nat:"NED", gender:"Men",   years:[2022,2023],           best:5  },
+  { id:"8051440",  name:"Thomas Benjamin",           nat:"FRA", gender:"Men",   years:[2022,2023],           best:2  },
+  { id:"63114164", name:"O'Brien Kelland",           nat:"AUS", gender:"Men",   years:[2022,2023],           best:13 },
+  { id:"17551333", name:"Hoover Gavin",              nat:"USA", gender:"Men",   years:[2022,2023],           best:15 },
+  { id:"18581361", name:"Zakharov Artyom",           nat:"KAZ", gender:"Men",   years:[2022,2023],           best:19 },
+  { id:"30681378", name:"Crista Daniel",             nat:"ROU", gender:"Men",   years:[2022,2023],           best:18 },
+  { id:"13804117", name:"Vitzthum Simon",            nat:"SUI", gender:"Men",   years:[2022,2024],           best:8  },
+  { id:"5399591",  name:"Leitao Iuri",               nat:"POR", gender:"Men",   years:[2023,2025],           best:1  },
+  { id:"38302585", name:"Stewart Campbell",          nat:"NZL", gender:"Men",   years:[2023,2025],           best:11 },
+  { id:"46347149", name:"de Vylder Lindsay",         nat:"BEL", gender:"Men",   years:[2024,2025],           best:1  },
+  { id:"4250938",  name:"Hayter Ethan",              nat:"GBR", gender:"Men",   years:[2022],                best:1  },
+  { id:"82786074", name:"Torres Barcelo Albert",     nat:"ESP", gender:"Men",   years:[2025],                best:1  },
+  { id:"86461499", name:"Consonni Simone",           nat:"ITA", gender:"Men",   years:[2024],                best:2  },
+  { id:"34216028", name:"Kuboki Kazushige",          nat:"JPN", gender:"Men",   years:[2025],                best:2  },
+  { id:"55360743", name:"Gate Aaron",                nat:"NZL", gender:"Men",   years:[2022],                best:3  },
+  { id:"97061713", name:"Dorenbos Yanne",            nat:"NED", gender:"Men",   years:[2024],                best:3  },
+  // Women
+  { id:"46758098", name:"Dideriksen Amalie",         nat:"DEN", gender:"Women", years:[2022,2023,2024,2025], best:2  },
+  { id:"97652378", name:"Seitz Aline",               nat:"SUI", gender:"Women", years:[2022,2023,2024,2025], best:12 },
+  { id:"62126443", name:"Stenberg Anita Yvonne",     nat:"NOR", gender:"Women", years:[2022,2023,2024,2025], best:3  },
+  { id:"20001191", name:"Valente Jennifer",          nat:"USA", gender:"Women", years:[2022,2023,2024],      best:1  },
+  { id:"66176699", name:"Martins Maria",             nat:"POR", gender:"Women", years:[2022,2023,2024],      best:3  },
+  { id:"28827751", name:"Sevcikova Petra B.",        nat:"CZE", gender:"Women", years:[2022,2023,2024],      best:10 },
+  { id:"93104679", name:"Gillespie Lara",            nat:"IRL", gender:"Women", years:[2023,2024,2025],      best:6  },
+  { id:"60795002", name:"Kajihara Yumi",             nat:"JPN", gender:"Women", years:[2022,2023,2025],      best:7  },
+  { id:"2476364",  name:"Kopecky Lotte",             nat:"BEL", gender:"Women", years:[2022,2023],           best:3  },
+  { id:"19027696", name:"Coles-Lyster Maggie",       nat:"CAN", gender:"Women", years:[2022,2023],           best:4  },
+  { id:"89564479", name:"Wollaston Ally",            nat:"NZL", gender:"Women", years:[2023,2024],           best:1  },
+  { id:"90754083", name:"Roberts Jessica",           nat:"GBR", gender:"Women", years:[2024,2025],           best:2  },
+  { id:"57564247", name:"Paternoster Letizia",       nat:"ITA", gender:"Women", years:[2023,2024],           best:11 },
+  { id:"46595788", name:"Acevedo Mendoza Yareli",    nat:"MEX", gender:"Women", years:[2024,2025],           best:5  },
+  { id:"66084761", name:"Anguela Yaguez Eva",        nat:"ESP", gender:"Women", years:[2024,2025],           best:8  },
+  { id:"61239637", name:"Larrarte Arteaga Eukene",   nat:"ESP", gender:"Women", years:[2022,2023],           best:16 },
+  { id:"82799438", name:"Lee Sze Wing",              nat:"HKG", gender:"Women", years:[2023,2024],           best:15 },
+  { id:"8396433",  name:"Wankiewicz Olga",           nat:"POL", gender:"Women", years:[2024,2025],           best:16 },
+  { id:"87037441", name:"Plante Lily",               nat:"CAN", gender:"Women", years:[2024,2025],           best:17 },
+  { id:"60119987", name:"Gedraityte Akvile",         nat:"LTU", gender:"Women", years:[2024,2025],           best:20 },
+  { id:"78449385", name:"Joseph Amber",              nat:"BAR", gender:"Women", years:[2022,2023],           best:23 },
+  { id:"10909412", name:"Zayed Ahmed Ebtissam",      nat:"EGY", gender:"Women", years:[2022,2023],           best:20 },
+  { id:"40509959", name:"Borras Marion",             nat:"FRA", gender:"Women", years:[2025],                best:2  },
+  { id:"34354382", name:"van der Duin Maike",        nat:"NED", gender:"Women", years:[2022],                best:2  },
+  { id:"12871485", name:"Berteau Victoire",          nat:"FRA", gender:"Women", years:[2024],                best:4  }
+];
+
+// ── Storage ──
+// Format: { [id]: { e: 0-100, s: 0-100 } | { dk: true } }
+
+const STORAGE_KEY = 'omnium_ratings_v4';
+
+const ratings = (function() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; }
+  catch(e) { return {}; }
+})();
+
+// ── State ──
+let activeFilter = 'all';
+let searchQuery  = '';
+let sortMode     = 'name';
+let dragging     = null;   // { id, type } while a slider is being dragged
+
+// ── Profile logic ──
+// Returns label, chip class, and card border class from a rating object.
+function getProfile(r) {
+  if (!r) return null;
+  if (r.dk) return { label: "Not familiar", chip: 'chip-none', border: 'border-dk' };
+  const e = r.e, s = r.s;
+  if (e >= 65 && s >= 65) return { label: 'All-rounder', chip: 'chip-bal',  border: 'border-bal' };
+  if (e >= 65)             return { label: 'Endurance',   chip: 'chip-end',  border: 'border-end' };
+  if (s >= 65)             return { label: 'Sprint',      chip: 'chip-spr',  border: 'border-spr' };
+  return                          { label: 'Balanced',    chip: 'chip-bal',  border: 'border-bal' };
+}
+
+// ── Filtered & sorted list ──
+function getList() {
+  let list = RIDERS.slice();
+
+  if (activeFilter === 'men')     list = list.filter(r => r.gender === 'Men');
+  if (activeFilter === 'women')   list = list.filter(r => r.gender === 'Women');
+  if (activeFilter === 'rated')   list = list.filter(r => ratings[r.id] != null);
+  if (activeFilter === 'unrated') list = list.filter(r => ratings[r.id] == null);
+
+  if (searchQuery) {
+    const q = searchQuery;
+    list = list.filter(r =>
+      r.name.toLowerCase().includes(q) || r.nat.toLowerCase().includes(q)
+    );
+  }
+
+  list.sort(function(a, b) {
+    if (sortMode === 'rank')     return a.best - b.best;
+    if (sortMode === 'editions') return b.years.length - a.years.length;
+    if (sortMode === 'profile') {
+      const da = (ratings[a.id] && !ratings[a.id].dk) ? (ratings[a.id].e - ratings[a.id].s) : 0;
+      const db = (ratings[b.id] && !ratings[b.id].dk) ? (ratings[b.id].e - ratings[b.id].s) : 0;
+      return db - da;
+    }
+    return a.name.localeCompare(b.name);
+  });
+
+  return list;
+}
+
+// ── Save & progress ──
+let saveTimeout;
+function save() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(ratings)); } catch(e) {}
+  const el = document.getElementById('save-status');
+  const tx = document.getElementById('save-text');
+  el.classList.add('saved');
+  tx.textContent = 'Saved';
+  clearTimeout(saveTimeout);
+  saveTimeout = setTimeout(function() {
+    el.classList.remove('saved');
+    tx.textContent = 'Auto-saved';
+  }, 1400);
+}
+
+function updateProgress() {
+  const done = RIDERS.filter(r => ratings[r.id] != null).length;
+  const pct  = Math.round(done / RIDERS.length * 100);
+  document.getElementById('rated-count').textContent = done;
+  document.getElementById('pct-text').textContent    = pct + '%';
+  document.getElementById('progress-fill').style.width = pct + '%';
+}
+
+// ── Card builder ──
+function buildCard(rider) {
+  const r   = ratings[rider.id];
+  const isR = r != null;
+  const isDK = isR && r.dk;
+
+  const endVal = (isR && !isDK) ? r.e : 50;
+  const sprVal = (isR && !isDK) ? r.s : 50;
+
+  const profile = isR ? getProfile(r) : null;
+  const borderClass = profile ? profile.border : '';
+
+  const chipHtml = isR
+    ? `<span class="chip ${profile.chip}">${profile.label}</span>`
+    : `<span class="chip chip-none">Not assessed</span>`;
+
+  const trackDis = isDK ? ' disabled' : '';
+  const dkActive = isDK ? ' active'   : '';
+  const valText  = isR && !isDK;
+
+  const years = rider.years.slice().sort().join(' · ');
+
+  return `
+    <div class="card ${borderClass}" id="card-${rider.id}">
+      <div class="card-top">
+        <div>
+          <div class="rider-name">${rider.name}</div>
+          <div class="rider-meta">${rider.nat} &middot; best #${rider.best}</div>
+        </div>
+        <div class="card-tags">
+          <span class="tag">${rider.gender}</span>
+          <span class="tag">${years}</span>
+        </div>
+      </div>
+      <div class="sliders">
+        <div class="slider-row">
+          <span class="slider-label end-lbl">End.</span>
+          <div class="slider-track${trackDis}" id="te-${rider.id}"
+               onmousedown="startDrag(event,'${rider.id}','e')"
+               ontouchstart="startDragTouch(event,'${rider.id}','e')">
+            <div class="fill-end" style="width:${endVal}%"></div>
+            <div class="thumb"    style="left:${endVal}%"></div>
+          </div>
+          <span class="slider-val" id="ve-${rider.id}">${valText ? endVal : '–'}</span>
+        </div>
+        <div class="slider-row">
+          <span class="slider-label spr-lbl">Sprint</span>
+          <div class="slider-track${trackDis}" id="ts-${rider.id}"
+               onmousedown="startDrag(event,'${rider.id}','s')"
+               ontouchstart="startDragTouch(event,'${rider.id}','s')">
+            <div class="fill-spr" style="width:${sprVal}%"></div>
+            <div class="thumb"    style="left:${sprVal}%"></div>
+          </div>
+          <span class="slider-val" id="vs-${rider.id}">${valText ? sprVal : '–'}</span>
+        </div>
+        <div class="card-footer">
+          <div id="chip-${rider.id}">${chipHtml}</div>
+          <button class="btn-dk${dkActive}" id="dk-${rider.id}"
+                  onclick="toggleDontKnow('${rider.id}')">Not familiar</button>
+        </div>
+      </div>
+    </div>`;
+}
+
+// ── Render ──
+function render() {
+  const list    = getList();
+  const men     = list.filter(r => r.gender === 'Men');
+  const women   = list.filter(r => r.gender === 'Women');
+  const showBoth = (activeFilter === 'all' || activeFilter === 'rated' || activeFilter === 'unrated')
+                    && men.length > 0 && women.length > 0;
+
+  let html = '';
+  if (showBoth) {
+    html = buildSection('Men', men) + buildSection('Women', women);
+  } else if (men.length > 0) {
+    html = buildSection('Men', men);
+  } else if (women.length > 0) {
+    html = buildSection('Women', women);
+  } else {
+    html = '<div class="grid"><div class="empty">No riders match your search.</div></div>';
+  }
+
+  html += buildBottomSection();
+  document.getElementById('main-content').innerHTML = html;
+  updateProgress();
+  updatePreview();
+}
+
+function buildSection(title, riders) {
+  const done = riders.filter(r => ratings[r.id] != null).length;
+  return `
+    <div class="section-header">
+      <span class="section-title">${title}</span>
+      <span class="section-count">${done} / ${riders.length} assessed</span>
+    </div>
+    <div class="grid">${riders.map(buildCard).join('')}</div>`;
+}
+
+function buildBottomSection() {
+  return `
+    <div class="bottom-section">
+      <div class="bottom-intro">
+        <h2>Submitting your responses</h2>
+        <p>
+          Once you are finished, download your results and send the CSV file.
+        </p>
+        <div class="bottom-notice">
+          <strong>Do not forget this step.</strong> Your responses are only stored locally in your browser, the CSV is the only way to share them.
+        </div>
+      </div>
+      <div class="bottom-grid">
+        <div class="bottom-card">
+          <h3>Download your responses</h3>
+          <p>
+            All assessed riders will be included with their endurance and sprint scores.
+            Riders marked as "Not familiar" and skipped riders are included as well.
+          </p>
+          <button class="btn-download" onclick="exportCSV()">↓ Download CSV</button>
+          <div id="preview-wrap"></div>
+        </div>
+        <div class="bottom-card">
+          <h3>Resume a previous session</h3>
+          <p>
+            Already started? Upload your previous CSV here to restore your progress.
+          </p>
+          <label class="upload-zone" id="upload-zone"
+                 ondragover="event.preventDefault();this.classList.add('over')"
+                 ondragleave="this.classList.remove('over')"
+                 ondrop="event.preventDefault();this.classList.remove('over');importCSV(event.dataTransfer.files[0])">
+            <input type="file" accept=".csv" onchange="importCSV(this.files[0])">
+            <div class="upload-icon">↑</div>
+            <div class="upload-text"><strong>Click to choose a file</strong> or drag it here</div>
+          </label>
+          <div class="upload-msg" id="upload-msg"></div>
+        </div>
+      </div>
+      <div class="closing-note">
+        <p>Thank you very much for taking the time to complete this assessment.</p>
+      </div>
+    </div>`;
+}
+
+// ── Slider interaction ──
+function clampPosition(track, clientX) {
+  const rect = track.getBoundingClientRect();
+  return Math.max(0, Math.min(100, Math.round((clientX - rect.left) / rect.width * 100)));
+}
+
+function applyValue(id, type, value) {
+  // If no rating or was dk, initialise both at 50
+  const wasDK = ratings[id] && ratings[id].dk;
+  if (!ratings[id] || ratings[id].dk) {
+    ratings[id] = { e: 50, s: 50 };
+    if (wasDK) {
+      // re-enable both tracks
+      ['e','s'].forEach(function(t) {
+        const el = document.getElementById('t' + t + '-' + id);
+        if (el) el.classList.remove('disabled');
+      });
+      const dkBtn = document.getElementById('dk-' + id);
+      if (dkBtn) dkBtn.classList.remove('active');
+    }
+  }
+
+  ratings[id][type] = value;
+
+  // Update track visuals
+  const track = document.getElementById('t' + type + '-' + id);
+  if (track) {
+    track.querySelector(type === 'e' ? '.fill-end' : '.fill-spr').style.width = value + '%';
+    track.querySelector('.thumb').style.left = value + '%';
+  }
+
+  // Update both value labels (once either is touched, both are valid)
+  const ve = document.getElementById('ve-' + id);
+  const vs = document.getElementById('vs-' + id);
+  if (ve) ve.textContent = ratings[id].e;
+  if (vs) vs.textContent = ratings[id].s;
+
+  // Update chip and card border
+  const profile = getProfile(ratings[id]);
+  const card    = document.getElementById('card-' + id);
+  if (card) card.className = 'card ' + profile.border;
+  const chip = document.getElementById('chip-' + id);
+  if (chip) chip.innerHTML = `<span class="chip ${profile.chip}">${profile.label}</span>`;
+
+  updateProgress();
+  save();
+  updatePreview();
+}
+
+function startDrag(e, id, type) {
+  e.preventDefault();
+  if (ratings[id] && ratings[id].dk) return;
+  dragging = { id: id, type: type };
+  applyValue(id, type, clampPosition(document.getElementById('t' + type + '-' + id), e.clientX));
+}
+
+function startDragTouch(e, id, type) {
+  e.preventDefault();
+  if (ratings[id] && ratings[id].dk) return;
+  dragging = { id: id, type: type };
+  applyValue(id, type, clampPosition(document.getElementById('t' + type + '-' + id), e.touches[0].clientX));
+}
+
+document.addEventListener('mousemove', function(e) {
+  if (!dragging) return;
+  const track = document.getElementById('t' + dragging.type + '-' + dragging.id);
+  if (track) applyValue(dragging.id, dragging.type, clampPosition(track, e.clientX));
+});
+
+document.addEventListener('touchmove', function(e) {
+  if (!dragging) return;
+  const track = document.getElementById('t' + dragging.type + '-' + dragging.id);
+  if (track) applyValue(dragging.id, dragging.type, clampPosition(track, e.touches[0].clientX));
+}, { passive: false });
+
+document.addEventListener('mouseup',  function() { dragging = null; });
+document.addEventListener('touchend', function() { dragging = null; });
+
+// ── Don't know toggle ──
+function toggleDontKnow(id) {
+  if (ratings[id] && ratings[id].dk) {
+    // Un-mark: restore to neutral 50/50
+    ratings[id] = { e: 50, s: 50 };
+  } else {
+    ratings[id] = { dk: true };
+  }
+
+  const r      = ratings[id];
+  const isDK   = !!r.dk;
+  const profile = getProfile(r);
+
+  const card = document.getElementById('card-' + id);
+  if (card) card.className = 'card ' + profile.border;
+
+  ['e', 's'].forEach(function(type) {
+    const track = document.getElementById('t' + type + '-' + id);
+    if (track) {
+      if (isDK) track.classList.add('disabled');
+      else      track.classList.remove('disabled');
+    }
+  });
+
+  const ve = document.getElementById('ve-' + id);
+  const vs = document.getElementById('vs-' + id);
+  if (ve) ve.textContent = isDK ? '–' : r.e;
+  if (vs) vs.textContent = isDK ? '–' : r.s;
+
+  const chip = document.getElementById('chip-' + id);
+  if (chip) chip.innerHTML = `<span class="chip ${profile.chip}">${profile.label}</span>`;
+
+  const dkBtn = document.getElementById('dk-' + id);
+  if (dkBtn) {
+    if (isDK) dkBtn.classList.add('active');
+    else      dkBtn.classList.remove('active');
+  }
+
+  updateProgress();
+  save();
+  updatePreview();
+}
+
+// ── Filters, search, sort ──
+function setFilter(f) {
+  activeFilter = f;
+  ['all','men','women','rated','unrated'].forEach(function(k) {
+    const el = document.getElementById('f-' + k);
+    if (el) el.className = 'filter-btn' + (k === f ? ' active' : '');
+  });
+  render();
+}
+
+function setSearch(v) { searchQuery = v.toLowerCase(); render(); }
+function setSort(v)   { sortMode    = v;               render(); }
+
+// ── Reset ──
+function resetAll() {
+  if (!confirm('This will permanently clear all your ratings. Are you sure?')) return;
+  Object.keys(ratings).forEach(function(k) { delete ratings[k]; });
+  save();
+  render();
+  showToast('All ratings have been cleared.');
+}
+
+// ── Preview table ──
+function updatePreview() {
+  const wrap = document.getElementById('preview-wrap');
+  if (!wrap) return;
+
+  const rated = RIDERS.filter(r => ratings[r.id] != null && !ratings[r.id].dk)
+                       .sort((a,b) => ratings[a.id].e - ratings[b.id].e);
+  const dkCount = RIDERS.filter(r => ratings[r.id] && ratings[r.id].dk).length;
+  const total   = rated.length + dkCount;
+
+  if (!total) {
+    wrap.innerHTML = '<p style="font-size:11px;color:#ccc;font-style:italic;margin-top:14px;text-align:center">Assess some riders to see a preview here.</p>';
+    return;
+  }
+
+  const shown = rated.slice(0, 8);
+  const more  = rated.length - shown.length;
+
+  const rows = shown.map(function(rider) {
+    const v = ratings[rider.id];
+    const p = getProfile(v);
+    return `<tr>
+      <td style="font-weight:500">${rider.name}</td>
+      <td style="color:#aaa">${rider.nat}</td>
+      <td>
+        <div class="bar-wrap">
+          <div class="mini-bar"><div class="mini-bar-end" style="width:${v.e}%"></div></div>
+          <span style="font-family:monospace;font-size:11px;color:#5b8a72">${v.e}</span>
+        </div>
+        <div class="bar-wrap" style="margin-top:3px">
+          <div class="mini-bar"><div class="mini-bar-spr" style="width:${v.s}%"></div></div>
+          <span style="font-family:monospace;font-size:11px;color:#b85c5c">${v.s}</span>
+        </div>
+      </td>
+      <td><span class="chip ${p.chip}" style="font-size:10.5px">${p.label}</span></td>
+    </tr>`;
+  }).join('');
+
+  const label = `Preview — ${total} assessed${dkCount ? ` (${dkCount} marked as "not familiar")` : ''}`;
+
+  wrap.innerHTML = `
+    <div class="preview-wrap">
+      <div class="preview-label">${label}</div>
+      <table class="preview-table">
+        <thead>
+          <tr>
+            <th>Rider</th>
+            <th>NAT</th>
+            <th>End. / Sprint</th>
+            <th>Profile</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+      ${more > 0 ? `<div class="preview-more">+ ${more} more rider${more > 1 ? 's' : ''} will appear in the downloaded file</div>` : ''}
+    </div>`;
+}
+
+// ── CSV export ──
+function exportCSV() {
+  const header = 'rider_id,name,nat,gender,years,best_rank,endurance,sprint,profile_label';
+  const lines  = [header];
+
+  RIDERS.forEach(function(rider) {
+    const r = ratings[rider.id];
+    const e = r && !r.dk ? r.e  : '';
+    const s = r && !r.dk ? r.s  : '';
+    const l = r ? (r.dk ? "Not familiar" : getProfile(r).label) : '';
+    const years = '"' + rider.years.slice().sort().join(',') + '"';
+    lines.push([rider.id, '"' + rider.name + '"', rider.nat, rider.gender, years, rider.best, e, s, l].join(','));
+  });
+
+  const blob = new Blob([lines.join('\n')], { type: 'text/csv;charset=utf-8;' });
+  const url  = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href     = url;
+  link.download = 'omnium_profiles.csv';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+
+  const count = RIDERS.filter(r => ratings[r.id] != null).length;
+  showToast('File downloaded — ' + count + ' riders included.');
+}
+
+// ── CSV import ──
+function importCSV(file) {
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const lines  = e.target.result.split('\n');
+    const header = lines[0].split(',');
+    const colId  = header.indexOf('rider_id');
+    const colE   = header.indexOf('endurance');
+    const colS   = header.indexOf('sprint');
+    const colL   = header.indexOf('profile_label');
+
+    if (colId < 0 || (colE < 0 && colS < 0)) {
+      document.getElementById('upload-msg').textContent = 'Error: could not find the required columns in this file.';
+      return;
+    }
+
+    let count = 0;
+    lines.slice(1).forEach(function(line) {
+      const cells = line.split(',');
+      const id    = cells[colId] ? cells[colId].trim() : '';
+      if (!id) return;
+
+      const label = colL >= 0 && cells[colL] ? cells[colL].trim() : '';
+      if (label === "Not familiar") {
+        ratings[id] = { dk: true };
+        count++;
+        return;
+      }
+
+      const endVal = parseInt(cells[colE] ? cells[colE].trim() : '');
+      const sprVal = parseInt(cells[colS] ? cells[colS].trim() : '');
+      if (!isNaN(endVal) && !isNaN(sprVal) && endVal >= 0 && endVal <= 100 && sprVal >= 0 && sprVal <= 100) {
+        ratings[id] = { e: endVal, s: sprVal };
+        count++;
+      }
+    });
+
+    save();
+    render();
+    document.getElementById('upload-msg').textContent = count + ' ratings restored successfully.';
+    showToast(count + ' ratings restored.');
+  };
+  reader.readAsText(file);
+}
+
+// ── Toast ──
+let toastTimer;
+function showToast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function() { el.classList.remove('show'); }, 2800);
+}
+
+// ── Init ──
+render();
+if (Object.keys(ratings).length > 0) {
+  document.getElementById('save-text').textContent = 'Auto-saved';
+}
+
 </script>
 </body>
 </html>
